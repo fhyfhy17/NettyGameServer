@@ -10,12 +10,12 @@ import com.wolf.shoot.service.lookup.NetTcpSessionLoopUpService;
 import com.wolf.shoot.service.net.message.facade.GameFacade;
 import com.wolf.shoot.service.net.message.registry.MessageRegistry;
 import com.wolf.shoot.service.rpc.client.DetectRPCPendingService;
-import com.wolf.shoot.service.rpc.server.RemoteRpcService;
+import com.wolf.shoot.service.rpc.client.RpcProxyService;
+import com.wolf.shoot.service.rpc.client.RpcServiceDiscovery;
+import com.wolf.shoot.service.rpc.server.RemoteRpcHandlerService;
 import com.wolf.shoot.service.rpc.server.RpcMethodRegistry;
-import com.wolf.shoot.service.rpc.server.RpcServiceDiscovery;
-import com.wolf.shoot.service.rpc.client.RpcSenderProxy;
+import com.wolf.shoot.service.rpc.server.zookeeper.ZookeeperRpcServiceRegistry;
 import com.wolf.shoot.service.time.SystemTimeService;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,7 +55,7 @@ public class LocalSpringServiceManager {
     private RpcMethodRegistry rpcMethodRegistry;
 
     @Autowired
-    private RemoteRpcService remoteRpcService;
+    private RemoteRpcHandlerService remoteRpcHandlerService;
 
     @Autowired
     private RpcServiceDiscovery rpcServiceDiscovery;
@@ -64,10 +64,13 @@ public class LocalSpringServiceManager {
     private EhcacheService ehcacheService;
 
     @Autowired
-    private RpcSenderProxy rpcSenderProxy;
+    private RpcProxyService rpcProxyService;
     
     @Autowired
     private DetectRPCPendingService detectRPCPendingService;
+
+    @Autowired
+    private ZookeeperRpcServiceRegistry zookeeperRpcServiceRegistry;
 
     public DetectRPCPendingService getDetectRPCPendingService() {
 		return detectRPCPendingService;
@@ -86,12 +89,12 @@ public class LocalSpringServiceManager {
         this.rpcServiceDiscovery = rpcServiceDiscovery;
     }
 
-    public RemoteRpcService getRemoteRpcService() {
-        return remoteRpcService;
+    public RemoteRpcHandlerService getRemoteRpcHandlerService() {
+        return remoteRpcHandlerService;
     }
 
-    public void setRemoteRpcService(RemoteRpcService remoteRpcService) {
-        this.remoteRpcService = remoteRpcService;
+    public void setRemoteRpcHandlerService(RemoteRpcHandlerService remoteRpcHandlerService) {
+        this.remoteRpcHandlerService = remoteRpcHandlerService;
     }
 
     public RpcMethodRegistry getRpcMethodRegistry() {
@@ -166,12 +169,12 @@ public class LocalSpringServiceManager {
         this.ehcacheService = ehcacheService;
     }
 
-    public RpcSenderProxy getRpcSenderProxy() {
-        return rpcSenderProxy;
+    public RpcProxyService getRpcProxyService() {
+        return rpcProxyService;
     }
 
-    public void setRpcSenderProxy(RpcSenderProxy rpcSenderProxy) {
-        this.rpcSenderProxy = rpcSenderProxy;
+    public void setRpcProxyService(RpcProxyService rpcProxyService) {
+        this.rpcProxyService = rpcProxyService;
     }
 
     public  void start() throws Exception {

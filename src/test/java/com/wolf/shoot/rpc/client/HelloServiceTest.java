@@ -6,9 +6,9 @@ import com.wolf.shoot.common.util.BeanUtil;
 import com.wolf.shoot.manager.LocalMananger;
 import com.wolf.shoot.manager.spring.LocalSpringBeanManager;
 import com.wolf.shoot.manager.spring.LocalSpringServiceManager;
-import com.wolf.shoot.service.rpc.server.RpcContextHolder;
-import com.wolf.shoot.service.rpc.server.RpcContextHolderObject;
-import com.wolf.shoot.service.rpc.client.RpcSenderProxy;
+import com.wolf.shoot.service.rpc.client.RpcContextHolder;
+import com.wolf.shoot.service.rpc.client.RpcContextHolderObject;
+import com.wolf.shoot.service.rpc.client.RpcProxyService;
 import com.wolf.shoot.service.rpc.service.client.HelloService;
 import org.junit.After;
 import org.junit.Assert;
@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class HelloServiceTest {
 
     @Autowired
-    private RpcSenderProxy rpcSenderProxy;
+    private RpcProxyService rpcProxyService;
 
     @Before
     public void init(){
@@ -45,7 +45,7 @@ public class HelloServiceTest {
 
     @Test
     public void helloTest1() {
-        HelloService helloService = rpcSenderProxy.create(HelloService.class);
+        HelloService helloService = rpcProxyService.createProxy(HelloService.class);
         int serverId = 8001;
         RpcContextHolderObject rpcContextHolderObject = new RpcContextHolderObject(BOEnum.WORLD, serverId);
         RpcContextHolder.setContextHolder(rpcContextHolderObject);
@@ -56,9 +56,9 @@ public class HelloServiceTest {
 
     @After
     public void setTear(){
-        if (rpcSenderProxy != null) {
+        if (rpcProxyService != null) {
             try {
-                rpcSenderProxy.shutdown();
+                rpcProxyService.shutdown();
             } catch (Exception e) {
                 e.printStackTrace();
             }

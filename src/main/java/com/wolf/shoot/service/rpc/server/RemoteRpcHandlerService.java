@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
  * Created by jwp on 2017/3/8.
  */
 @Service
-public class RemoteRpcService implements IService{
+public class RemoteRpcHandlerService implements IService{
 
     @Autowired
-    private RpcThreadPool rpcThreadPool;
+    private RpcHandlerThreadPool rpcHandlerThreadPool;
 
     @Override
     public String getId() {
@@ -29,16 +29,16 @@ public class RemoteRpcService implements IService{
         GameServerConfig gameServerConfig = gameServerConfigService.getGameServerConfig();
         if(gameServerConfig.isRpcFlag()){
             //开启服务
-            rpcThreadPool.createExecutor(gameServerConfig.getRpcThreadPoolSize(), gameServerConfig.getRpcThreadPoolQueueSize());
+            rpcHandlerThreadPool.createExecutor(gameServerConfig.getRpcThreadPoolSize(), gameServerConfig.getRpcThreadPoolQueueSize());
         }
     }
 
     @Override
     public void shutdown() throws Exception {
-        ExecutorUtil.shutdownAndAwaitTermination(rpcThreadPool.getExcutor());
+        ExecutorUtil.shutdownAndAwaitTermination(rpcHandlerThreadPool.getExcutor());
     }
 
     public void submit(Runnable runnable){
-        rpcThreadPool.getExcutor().submit(runnable);
+        rpcHandlerThreadPool.getExcutor().submit(runnable);
     }
 }
