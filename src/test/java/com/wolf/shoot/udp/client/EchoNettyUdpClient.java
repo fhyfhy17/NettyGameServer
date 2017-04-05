@@ -50,9 +50,9 @@ public class EchoNettyUdpClient {
             }
         }));
 
-        while (true){
-            Thread.currentThread().sleep(100l);
-        }
+//        while (true){
+//            Thread.currentThread().sleep(100l);
+//        }
     }
 
     public static void sendStringMessage(Channel udpChannel) throws InterruptedException {
