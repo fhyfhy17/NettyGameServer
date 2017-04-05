@@ -6,6 +6,7 @@ import com.wolf.shoot.common.util.BeanUtil;
 import com.wolf.shoot.manager.LocalMananger;
 import com.wolf.shoot.manager.spring.LocalSpringBeanManager;
 import com.wolf.shoot.manager.spring.LocalSpringServiceManager;
+import com.wolf.shoot.manager.spring.LocalSpringServicerAfterManager;
 import com.wolf.shoot.service.rpc.client.ZookeeperRpcServiceDiscovery;
 import com.wolf.shoot.service.rpc.server.RpcConfig;
 import com.wolf.shoot.service.rpc.server.SdRpcServiceProvider;
@@ -39,10 +40,13 @@ public class ZookeeperTest {
     public void init() {
         LocalSpringServiceManager localSpringServiceManager = (LocalSpringServiceManager) BeanUtil.getBean("localSpringServiceManager");
         LocalSpringBeanManager localSpringBeanManager = (LocalSpringBeanManager) BeanUtil.getBean("localSpringBeanManager");
+        LocalSpringServicerAfterManager localSpringServicerAfterManager  = (LocalSpringServicerAfterManager) BeanUtil.getBean("localSpringServicerAfterManager");
         LocalMananger.getInstance().setLocalSpringBeanManager(localSpringBeanManager);
         LocalMananger.getInstance().setLocalSpringServiceManager(localSpringServiceManager);
+        LocalMananger.getInstance().setLocalSpringServicerAfterManager(localSpringServicerAfterManager);
         try {
             localSpringServiceManager.start();
+            localSpringServicerAfterManager.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,20 +60,21 @@ public class ZookeeperTest {
         SdRpcServiceProvider sdRpcServiceProvider = rpcConfig.getSdRpcServiceProvider();
         GameServerConfig gameServerConfig = gameServerConfigService.getGameServerConfig();
         String serverId = gameServerConfig.getServerId();
-        String host = gameServerConfig.getBindIp();
+        String host = gameServerConfig.getRpcBindIp();
         String ports = gameServerConfig.getRpcPorts();
         ZooKeeperNodeInfo zooKeeperNodeInfo = new ZooKeeperNodeInfo(ZooKeeperNodeBoEnum.WORLD, serverId, host, ports);
+
         zookeeperRpcServiceRegistry.register(zooKeeperNodeInfo.getZooKeeperNodeBoEnum().getRootPath(),zooKeeperNodeInfo.getNodePath(), zooKeeperNodeInfo.serialize());
-        worldZookeeperRpcServiceDiscovery.discovery();
-        List<ZooKeeperNodeInfo> dataList = worldZookeeperRpcServiceDiscovery.getNodeList();
+        worldZookeeperRpcServiceDiscovery.discovery(ZooKeeperNodeBoEnum.WORLD);
+        List<ZooKeeperNodeInfo> dataList = worldZookeeperRpcServiceDiscovery.getNodeList(ZooKeeperNodeBoEnum.WORLD);
         System.out.println(dataList);
     }
 
     @After
     public void close() throws Exception {
-//        zookeeperRpcServiceRegistry.deleteNode(zookeeperRpcServiceRegistry.getZk(), ZooKeeperNodeBoEnum.WORLD.getRegistryAdress());
-//        zookeeperRpcServiceRegistry.deleteNode(zookeeperRpcServiceRegistry.getZk(), ZooKeeperNodeBoEnum.GAME.getRegistryAdress());
-//        zookeeperRpcServiceRegistry.deleteNode(zookeeperRpcServiceRegistry.getZk(), ZooKeeperNodeBoEnum.DB.getRegistryAdress());
+//        zookeeperRpcServiceRegistry.deleteNode(zookeeperRpcServiceRegistry.getZk(), ZooKeeperNodeBoEnum.WORLD.getRootPath());
+//        zookeeperRpcServiceRegistry.deleteNode(zookeeperRpcServiceRegistry.getZk(), ZooKeeperNodeBoEnum.GAME.getRootPath());
+//        zookeeperRpcServiceRegistry.deleteNode(zookeeperRpcServiceRegistry.getZk(), ZooKeeperNodeBoEnum.DB.getRootPath());
 
         zookeeperRpcServiceRegistry.shutdown();
         worldZookeeperRpcServiceDiscovery.stop();

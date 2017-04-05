@@ -39,7 +39,15 @@ public class ZookeeperRpcServiceRegistry implements IService{
         if(!StringUtils.isEmpty(registry_path)){
             if (zk != null) {
                 addRootNode(zk, registry_path);
-                deleteNode(zk, nodePath);
+                try {
+                    if(zk.exists(nodePath, false) != null) {
+                        deleteNode(zk, nodePath);
+                    }
+                } catch (KeeperException e) {
+//                        e.printStackTrace();
+                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+                }
                 createNode(zk, nodePath, nodeData);
             }
         }
@@ -165,7 +173,7 @@ public class ZookeeperRpcServiceRegistry implements IService{
         SdRpcServiceProvider sdRpcServiceProvider = rpcConfig.getSdRpcServiceProvider();
         GameServerConfig gameServerConfig = gameServerConfigService.getGameServerConfig();
         String serverId = gameServerConfig.getServerId();
-        String host = gameServerConfig.getBindIp();
+        String host = gameServerConfig.getRpcBindIp();
         String ports = gameServerConfig.getRpcPorts();
         if(sdRpcServiceProvider.isWorldOpen()){
             ZooKeeperNodeInfo zooKeeperNodeInfo = new ZooKeeperNodeInfo(ZooKeeperNodeBoEnum.WORLD, serverId, host, ports);

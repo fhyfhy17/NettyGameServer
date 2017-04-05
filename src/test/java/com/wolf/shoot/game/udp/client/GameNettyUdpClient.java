@@ -4,7 +4,7 @@ import com.wolf.shoot.manager.LocalMananger;
 import com.wolf.shoot.manager.spring.LocalSpringServiceManager;
 import com.wolf.shoot.message.logic.udp.online.OnlineHeartClientUDPMessage;
 import com.wolf.shoot.service.net.message.registry.MessageRegistry;
-import com.wolf.shoot.udp.client.UdpProtoBufClientChannelInitializer;
+import com.wolf.shoot.common.udp.client.UdpProtoBufClientChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
