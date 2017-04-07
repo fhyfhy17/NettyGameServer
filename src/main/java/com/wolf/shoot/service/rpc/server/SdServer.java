@@ -8,127 +8,126 @@ import org.jdom2.DataConversionException;
 import org.jdom2.Element;
 
 /**
- * @author jwp
- *	服务器
+ * @author jwp 服务器
  */
 public class SdServer {
 
+	/**
+	 * 服务器配置id
+	 */
+	private int serverId;
+	private String ip;
+	private int port;
+	/**
+	 * 域名
+	 */
+	private String domain;
+	/**
+	 * 域名端口
+	 */
+	private int domainPort;
 
-    /**
-     * 服务器配置id
-     */
-    private int serverId;
-    private String ip;
-    private int port;
-    /**
-     * 域名
-     */
-    private String domain;
-    /**
-     * 域名端口
-     */
-    private int domainPort;
+	/**
+	 * 权重
+	 */
+	private int weight;
 
-    /**
-     * 权重
-     */
-    private int weight;
+	/**
+	 * 最大数量
+	 */
+	private int maxNumber;
 
-    /**
-     * 最大数量
-     */
-    private int maxNumber;
+	/**
+	 * 通讯短端口
+	 */
+	private int rpcPort;
+	/**
+	 * 通讯链接数量
+	 */
+	private int rpcClientNumber;
 
+	public int getServerId() {
+		return serverId;
+	}
 
-    /**
-     * 通讯短端口
-     */
-    private int rpcPort;
-    /**
-     * 通讯链接数量
-     */
-    private int rpcClientNumber;
+	public void setServerId(int serverId) {
+		this.serverId = serverId;
+	}
 
-    public int getServerId() {
-        return serverId;
-    }
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
-    }
-    public String getIp() {
-        return ip;
-    }
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
+	public String getIp() {
+		return ip;
+	}
 
-    public int getPort() {
-        return port;
-    }
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
-    public void setPort(int port) {
-        this.port = port;
-    }
+	public int getPort() {
+		return port;
+	}
 
-    public int getWeight() {
-        return weight;
-    }
+	public void setPort(int port) {
+		this.port = port;
+	}
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+	public int getWeight() {
+		return weight;
+	}
 
-    public int getMaxNumber() {
-        return maxNumber;
-    }
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
-    public void setMaxNumber(int maxNumber) {
-        this.maxNumber = maxNumber;
-    }
+	public int getMaxNumber() {
+		return maxNumber;
+	}
 
-    public String getDomain() {
-        return domain;
-    }
+	public void setMaxNumber(int maxNumber) {
+		this.maxNumber = maxNumber;
+	}
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
+	public String getDomain() {
+		return domain;
+	}
 
-    public int getDomainPort() {
-        return domainPort;
-    }
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
-    public void setDomainPort(int domainPort) {
-        this.domainPort = domainPort;
-    }
+	public int getDomainPort() {
+		return domainPort;
+	}
 
-    public int getRpcPort() {
-        return rpcPort;
-    }
+	public void setDomainPort(int domainPort) {
+		this.domainPort = domainPort;
+	}
 
-    public void setRpcPort(int rpcPort) {
-        this.rpcPort = rpcPort;
-    }
+	public int getRpcPort() {
+		return rpcPort;
+	}
 
-    public int getRpcClientNumber() {
-        return rpcClientNumber;
-    }
+	public void setRpcPort(int rpcPort) {
+		this.rpcPort = rpcPort;
+	}
 
-    public void setRpcClientNumber(int rpcClientNumber) {
-        this.rpcClientNumber = rpcClientNumber;
-    }
+	public int getRpcClientNumber() {
+		return rpcClientNumber;
+	}
 
-    public void load(Element element) throws DataConversionException {
-        serverId = element.getAttribute("serverId").getIntValue();
-        domain = element.getAttributeValue("domain");
-        domainPort = element.getAttribute("domainPort").getIntValue();
-        ip = element.getAttributeValue("ip");
-        port = element.getAttribute("port").getIntValue();
-        weight = element.getAttribute("weight").getIntValue();
-        maxNumber = element.getAttribute("maxNumber").getIntValue();
-        rpcPort = element.getAttribute("rpcPort").getIntValue();
-        rpcClientNumber = element.getAttribute("rpcClientNumber").getIntValue();
-    }
+	public void setRpcClientNumber(int rpcClientNumber) {
+		this.rpcClientNumber = rpcClientNumber;
+	}
 
+	public void load(Element element) throws DataConversionException {
+		serverId = element.getAttribute("serverId").getIntValue();
+		domain = element.getAttributeValue("domain");
+		domainPort = element.getAttribute("domainPort").getIntValue();
+		ip = element.getAttributeValue("ip");
+		port = element.getAttribute("port").getIntValue();
+		weight = element.getAttribute("weight").getIntValue();
+		maxNumber = element.getAttribute("maxNumber").getIntValue();
+		rpcPort = element.getAttribute("rpcPort").getIntValue();
+		rpcClientNumber = element.getAttribute("rpcClientNumber").getIntValue();
+	}
 
 }

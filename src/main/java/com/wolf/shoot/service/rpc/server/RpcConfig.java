@@ -35,7 +35,7 @@ public class RpcConfig{
 
         Element rootElement = JdomUtils.getRootElemet(FileUtil.getConfigURL(GlobalConstants.ConfigFile.RPC_SERVER_CONFIG).getFile());
 
-        Map<Integer, SdServer> serverMap = new HashMap<>();
+       
 
         List<SdServer> sdWorldServers = new ArrayList<SdServer>();
         Element element = rootElement.getChild(BOEnum.WORLD.toString().toLowerCase());

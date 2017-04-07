@@ -1,9 +1,10 @@
 package com.wolf.shoot.service.net.process;
 
+import org.slf4j.Logger;
+
 import com.wolf.shoot.common.constant.Loggers;
 import com.wolf.shoot.server.GameServerRuntime;
 import com.wolf.shoot.service.net.message.AbstractNetMessage;
-import org.slf4j.Logger;
 
 /**
  * Created by jiangwenping on 17/2/20.
@@ -18,7 +19,7 @@ public class GameUdpMessageProcessor implements IMessageProcessor {
         mainMessageProcessor = messageProcessor;
     }
 
-    @Override
+   
     public boolean isFull() {
         return mainMessageProcessor.isFull();
     }
@@ -29,7 +30,6 @@ public class GameUdpMessageProcessor implements IMessageProcessor {
      * 2、玩家在场景中发送过来的消息，添加到玩家的消息队列中，在场景的线程中进行处理
      * </pre>
      */
-    @Override
     public void put(AbstractNetMessage msg) {
         if (!GameServerRuntime.isOpen()) {
             log.info("【Receive but will not process because server not open】"	+ msg);
@@ -40,12 +40,10 @@ public class GameUdpMessageProcessor implements IMessageProcessor {
 
     }
 
-    @Override
     public void start() {
         mainMessageProcessor.start();
     }
 
-    @Override
     public void stop() {
         mainMessageProcessor.stop();
     }

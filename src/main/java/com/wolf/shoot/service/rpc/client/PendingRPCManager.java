@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class PendingRPCManager {
 
-	private ConcurrentHashMap<String, RPCFuture> pendingRPC = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, RPCFuture> pendingRPC = new ConcurrentHashMap<String, RPCFuture>();
 
 	public RPCFuture getRPCFuture(String requestId){
 		if(pendingRPC.get(requestId)!=null){

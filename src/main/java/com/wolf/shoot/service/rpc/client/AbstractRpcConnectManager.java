@@ -26,7 +26,7 @@ public abstract class AbstractRpcConnectManager {
 
     private ThreadPoolExecutor threadPoolExecutor;
 
-    private Map<Integer, RpcClient> serverNodes = new HashMap<>();
+    private Map<Integer, RpcClient> serverNodes = new HashMap<Integer, RpcClient>();
 
     private AtomicInteger roundRobin = new AtomicInteger();
 

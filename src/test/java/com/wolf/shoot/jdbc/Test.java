@@ -34,7 +34,7 @@ public class Test {
 
     public static void updateBatchTest(ClassPathXmlApplicationContext classPathXmlApplicationContext, OrderService orderService, List<Order> orderList) throws Exception {
         EnityProxyService enityProxyService = (EnityProxyService) classPathXmlApplicationContext.getBean("enityProxyService");
-        List<Order> updateList = new ArrayList<>();
+        List<Order> updateList = new ArrayList<Order>();
         for (Order order : orderList) {
             Order proxyOrder = enityProxyService.createProxyEntity(order);
             proxyOrder.setStatus("dddd");

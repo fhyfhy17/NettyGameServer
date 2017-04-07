@@ -28,7 +28,6 @@ public class GameNetRPCServerHandler extends SimpleChannelInboundHandler<RpcRequ
     public void channelRead0(final ChannelHandlerContext ctx,final RpcRequest request) throws Exception {
         RemoteRpcHandlerService remoteRpcHandlerService = LocalMananger.getInstance().getLocalSpringServiceManager().getRemoteRpcHandlerService();
         remoteRpcHandlerService.submit(new Runnable() {
-            @Override
             public void run() {
                 if(logger.isDebugEnabled()) {
                     logger.debug("Receive request " + request.getRequestId());
@@ -43,7 +42,6 @@ public class GameNetRPCServerHandler extends SimpleChannelInboundHandler<RpcRequ
                     logger.error("RPC Server handle request error",t);
                 }
                 ctx.writeAndFlush(response).addListener(new ChannelFutureListener() {
-                    @Override
                     public void operationComplete(ChannelFuture channelFuture) throws Exception {
                         if(logger.isDebugEnabled()) {
                             logger.debug("Send response for request " + request.getRequestId());

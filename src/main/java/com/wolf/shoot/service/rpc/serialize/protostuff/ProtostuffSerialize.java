@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class ProtostuffSerialize implements RpcSerialize {
-    private Map<Class<?>, Schema<?>> cachedSchema = new ConcurrentHashMap<>();
+    private Map<Class<?>, Schema<?>> cachedSchema = new ConcurrentHashMap();
 
     private Objenesis objenesis = new ObjenesisStd(true);
 

@@ -46,7 +46,6 @@ public class GameNettyUdpClient {
 //        sendStringMessage(udpChannel);
         sendMessage(udpChannel);
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
             public void run() {
                 nioEventLoopGroup.shutdownGracefully();
             }

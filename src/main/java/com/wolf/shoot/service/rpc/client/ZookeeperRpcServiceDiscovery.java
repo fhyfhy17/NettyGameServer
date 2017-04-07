@@ -34,7 +34,7 @@ public class ZookeeperRpcServiceDiscovery implements IService{
 
     private CountDownLatch countDownLatch = new CountDownLatch(1);
 
-    private volatile Map<ZooKeeperNodeBoEnum, List<ZooKeeperNodeInfo>> nodeMap = new ConcurrentHashMap<>();
+    private volatile Map<ZooKeeperNodeBoEnum, List<ZooKeeperNodeInfo>> nodeMap = new ConcurrentHashMap<ZooKeeperNodeBoEnum, List<ZooKeeperNodeInfo>>();
 
     private Random random = new Random();
 
@@ -79,8 +79,7 @@ public class ZookeeperRpcServiceDiscovery implements IService{
             ZooKeeperConfig zooKeeperConfig = gameServerConfigService.getZooKeeperConfig();
             String registryAdress = zooKeeperConfig.getProperty(GlobalConstants.ZooKeeperConstants.registryAdress);
             zk = new ZooKeeper(registryAdress, GlobalConstants.ZooKeeperConstants.ZK_SESSION_TIMEOUT, new Watcher() {
-                @Override
-                public void process(WatchedEvent event) {
+				public void process(WatchedEvent event) {
                     countDownLatch.countDown();
                 }
             });
@@ -95,13 +94,13 @@ public class ZookeeperRpcServiceDiscovery implements IService{
             GameServerConfigService gameServerConfigService = LocalMananger.getInstance().getLocalSpringServiceManager().getGameServerConfigService();
             String rootPath = zooKeeperNodeBoEnum.getRootPath();
             List<String> nodeList = zk.getChildren(rootPath, new Watcher() {
-                @Override
+              
                 public void process(WatchedEvent event) {
                     watchNode(zooKeeperNodeBoEnum);
                 }
             });
 
-            List<ZooKeeperNodeInfo> tempNodeList = new ArrayList<>();
+            List<ZooKeeperNodeInfo> tempNodeList = new ArrayList<ZooKeeperNodeInfo>();
             for (String node: nodeList){
                 ZooKeeperNodeInfo zooKeeperNodeInfo = new ZooKeeperNodeInfo();
                 byte[] bytes = zk.getData(zooKeeperNodeBoEnum.getRootPath() + "/" + node, false, null);

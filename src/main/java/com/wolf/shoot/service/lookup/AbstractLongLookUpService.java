@@ -14,12 +14,10 @@ public abstract class AbstractLongLookUpService<T extends ILongId> implements IL
 
     protected ConcurrentHashMap<Long, T> tMap = new ConcurrentHashMap<Long, T>();
 
-    @Override
     public T lookup(long id) {
         return tMap.get(id);
     }
 
-    @Override
     public void addT(T t) {
         if(log.isDebugEnabled()){
             log.debug("add T " + t.id());
@@ -27,7 +25,6 @@ public abstract class AbstractLongLookUpService<T extends ILongId> implements IL
         tMap.put(t.id(), t);
     }
 
-    @Override
     public boolean removeT(T t) {
         if(log.isDebugEnabled()){
             log.debug("remove t " + t.id());

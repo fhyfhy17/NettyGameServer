@@ -21,17 +21,14 @@ public class GamePlayer implements  IPlayer, ILongId{
         this.udpTocken = udpTocken;
     }
 
-    @Override
     public long getPlayerId() {
         return playerId;
     }
 
-    @Override
     public int getPlayerUdpTocken() {
         return udpTocken;
     }
 
-    @Override
     public NettySession getNettyTcpSession() {
         return nettyTcpSession;
     }
@@ -52,7 +49,7 @@ public class GamePlayer implements  IPlayer, ILongId{
         this.nettyTcpSession = nettyTcpSession;
     }
 
-    @Override
+    
     public long id() {
         return playerId;
     }
