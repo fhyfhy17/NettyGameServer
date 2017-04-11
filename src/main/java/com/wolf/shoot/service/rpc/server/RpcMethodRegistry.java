@@ -1,10 +1,11 @@
 package com.wolf.shoot.service.rpc.server;
 
 import com.wolf.shoot.common.annotation.RpcService;
+import com.wolf.shoot.common.config.GameServerConfigService;
 import com.wolf.shoot.common.constant.GlobalConstants;
 import com.wolf.shoot.common.constant.Loggers;
 import com.wolf.shoot.common.constant.ServiceName;
-import com.wolf.shoot.common.util.ClassScanner;
+import com.wolf.shoot.common.loader.scanner.ClassScanner;
 import com.wolf.shoot.manager.LocalMananger;
 import com.wolf.shoot.service.IService;
 import com.wolf.shoot.service.Reloadable;
@@ -33,8 +34,7 @@ public class RpcMethodRegistry implements Reloadable, IService {
 
     @Override
     public void startup() throws Exception {
-        loadPackage(GlobalConstants.MessageCommandConstants.RpcNameSpace,
-                GlobalConstants.MessageCommandConstants.Ext);
+        reload();
     }
 
     @Override
@@ -44,7 +44,9 @@ public class RpcMethodRegistry implements Reloadable, IService {
 
     @Override
     public void reload() throws Exception {
-        loadPackage(GlobalConstants.MessageCommandConstants.RpcNameSpace,
+        GameServerConfigService gameServerConfigService = LocalMananger.getInstance().getLocalSpringServiceManager().getGameServerConfigService();
+        String packageName = gameServerConfigService.getGameServerConfig().getRpcServicePackage();
+        loadPackage(gameServerConfigService.getGameServerConfig().getRpcServicePackage(),
                 GlobalConstants.MessageCommandConstants.Ext);
     }
 
@@ -60,11 +62,14 @@ public class RpcMethodRegistry implements Reloadable, IService {
                 Class<?> messageClass = Class.forName(realClass);
 
                 logger.info("rpc load:" + messageClass);
-                String interfaceName = messageClass.getAnnotation(RpcService.class).value().getName();
-
-                ProtostuffSerialize rpcSerialize = LocalMananger.getInstance().getLocalSpringBeanManager().getProtostuffSerialize();
-                Object serviceBean = (Object) rpcSerialize.newInstance(messageClass);
-                registryMap.put(interfaceName, serviceBean);
+                RpcService rpcService = messageClass.getAnnotation(RpcService.class);
+                if(rpcService != null) {
+                    String interfaceName = messageClass.getAnnotation(RpcService.class).value().getName();
+                    ProtostuffSerialize rpcSerialize = LocalMananger.getInstance().getLocalSpringBeanManager().getProtostuffSerialize();
+                    Object serviceBean = (Object) rpcSerialize.newInstance(messageClass);
+                    registryMap.put(interfaceName, serviceBean);
+                    logger.info("rpc register:" + messageClass);
+                }
             }
         }
     }

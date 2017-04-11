@@ -12,11 +12,6 @@ config.language="zh_CN";
 config.i18nDir="i18n";
 config.gameId="shoot";
 config.developModel= 1;
-/**异步通讯接口***/
-config.communicationPort=10000;
-config.communicationMaxThreadPoolSize=140;
-config.communicationHandlerMaxThreadPoolSize=280;
-config.communicationMaxWriteIntervalTime=60*60*1000;
 config.tcpMessageQueueDirectDispatch=true;
 /**gameexcutor配置***/
 config.gameExcutorCorePoolSize=2;
@@ -37,3 +32,7 @@ config.rpcThreadPoolSize=60;
 config.rpcThreadPoolQueueSize=65536;
 config.rpcConnectThreadSize=16;
 config.rpcSendProxyThreadSize=16;
+config.rpcServicePackage="com.wolf.shoot.service.rpc.service.server";
+/**message**/
+config.netMessageHandlerNameSpace="com.wolf.shoot.message.handler.impl";
+config.netMsgNameSpace="com.wolf.shoot.message.logic";

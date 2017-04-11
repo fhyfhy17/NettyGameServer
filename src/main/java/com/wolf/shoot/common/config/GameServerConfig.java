@@ -29,26 +29,6 @@ public class GameServerConfig extends ServerConfig {
     private int developModel;
 
     /**
-     * 通讯端口
-     */
-    private String communicationPort;
-
-    /**
-     * 通讯线程池维护链接最大执行数量
-     */
-    private int communicationMaxThreadPoolSize;
-
-    /**
-     * 通讯线程池处理链接最大执行数量
-     */
-    private int communicationHandlerMaxThreadPoolSize;
-
-    /**
-     * 通讯线程池处理 超过此时间写入回应
-     */
-    private int communicationMaxWriteIntervalTime;
-
-    /**
      * gameExcutor中UpdateExecutorService线程池心线程大小
      */
     private int gameExcutorCorePoolSize;
@@ -87,8 +67,14 @@ public class GameServerConfig extends ServerConfig {
     private int rpcConnectThreadSize;
     /*rpc连接线程池大小*/
     private int rpcSendProxyThreadSize;
-    //这个是提供外网使用的，请使用外网地址
+    /*这个是提供外网使用的，请使用外网地址*/
     private String rpcBindIp;
+    /*rpc服务的包名字*/
+    private String rpcServicePackage;
+    /*rpc服务的包名字*/
+    private String netMessageHandlerNameSpace;
+    /*rpc服务的包名字*/
+    private String netMsgNameSpace;
 
     public GameServerConfig() {
     }
@@ -163,38 +149,6 @@ public class GameServerConfig extends ServerConfig {
 
     public int getServerIdInt(){
         return Integer.parseInt(this.serverId);
-    }
-    public String getCommunicationPort() {
-        return communicationPort;
-    }
-
-    public void setCommunicationPort(String communicationPort) {
-        this.communicationPort = communicationPort;
-    }
-
-
-    public int getCommunicationMaxThreadPoolSize() {
-        return communicationMaxThreadPoolSize;
-    }
-
-    public void setCommunicationMaxThreadPoolSize(int communicationMaxThreadPoolSize) {
-        this.communicationMaxThreadPoolSize = communicationMaxThreadPoolSize;
-    }
-
-    public int getCommunicationHandlerMaxThreadPoolSize() {
-        return communicationHandlerMaxThreadPoolSize;
-    }
-
-    public void setCommunicationHandlerMaxThreadPoolSize(int communicationHandlerMaxThreadPoolSize) {
-        this.communicationHandlerMaxThreadPoolSize = communicationHandlerMaxThreadPoolSize;
-    }
-
-    public int getCommunicationMaxWriteIntervalTime() {
-        return communicationMaxWriteIntervalTime;
-    }
-
-    public void setCommunicationMaxWriteIntervalTime(int communicationMaxWriteIntervalTime) {
-        this.communicationMaxWriteIntervalTime = communicationMaxWriteIntervalTime;
     }
 
     public boolean isTcpMessageQueueDirectDispatch() {
@@ -335,5 +289,29 @@ public class GameServerConfig extends ServerConfig {
 
     public void setRpcBindIp(String rpcBindIp) {
         this.rpcBindIp = rpcBindIp;
+    }
+
+    public String getRpcServicePackage() {
+        return rpcServicePackage;
+    }
+
+    public void setRpcServicePackage(String rpcServicePackage) {
+        this.rpcServicePackage = rpcServicePackage;
+    }
+
+    public String getNetMessageHandlerNameSpace() {
+        return netMessageHandlerNameSpace;
+    }
+
+    public void setNetMessageHandlerNameSpace(String netMessageHandlerNameSpace) {
+        this.netMessageHandlerNameSpace = netMessageHandlerNameSpace;
+    }
+
+    public String getNetMsgNameSpace() {
+        return netMsgNameSpace;
+    }
+
+    public void setNetMsgNameSpace(String netMsgNameSpace) {
+        this.netMsgNameSpace = netMsgNameSpace;
     }
 }
