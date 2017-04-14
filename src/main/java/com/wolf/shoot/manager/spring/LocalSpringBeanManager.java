@@ -8,6 +8,7 @@ import com.wolf.shoot.service.net.pipeline.DefaultTcpServerPipeLine;
 import com.wolf.shoot.service.net.pipeline.DefaultUdpServerPipeLine;
 import com.wolf.shoot.service.net.session.builder.NettyTcpSessionBuilder;
 import com.wolf.shoot.service.net.session.builder.NettyUdpSessionBuilder;
+import com.wolf.shoot.service.rpc.client.PendingRPCManager;
 import com.wolf.shoot.service.rpc.client.RpcRequestFactroy;
 import com.wolf.shoot.service.rpc.serialize.protostuff.ProtostuffSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,19 @@ public class LocalSpringBeanManager {
 
     @Autowired
     private RpcRequestFactroy requestFactroy;
+    
+    @Autowired
+    private PendingRPCManager pendingRPCManger;
+    
+    public PendingRPCManager getPendingRPCManager() {
+		return pendingRPCManger;
+	}
 
-    public NettyUdpSessionBuilder getNettyUdpSessionBuilder() {
+	public void setPendingRPCManger(PendingRPCManager pendingRPCManger) {
+		this.pendingRPCManger = pendingRPCManger;
+	}
+
+	public NettyUdpSessionBuilder getNettyUdpSessionBuilder() {
         return nettyUdpSessionBuilder;
     }
 
