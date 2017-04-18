@@ -37,14 +37,8 @@ public class Test {
     }
 
     public static void updateBatchTest(ClassPathXmlApplicationContext classPathXmlApplicationContext, OrderService orderService, List<Order> orderList) throws Exception {
-<<<<<<< HEAD
-
-        EnityProxyFactory enityProxyFactory = (EnityProxyFactory) classPathXmlApplicationContext.getBean("enityProxyFactory");
-=======
         EntityProxyFactory entityProxyFactory = (EntityProxyFactory) classPathXmlApplicationContext.getBean("enityProxyFactory");
->>>>>>> refs/remotes/jwpttcg66/master
         List<Order> updateList = new ArrayList<>();
-
         for (Order order : orderList) {
             Order proxyOrder = entityProxyFactory.createProxyEntity(order);
             proxyOrder.setStatus("dddd");
