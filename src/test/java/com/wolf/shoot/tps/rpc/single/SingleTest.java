@@ -27,6 +27,7 @@ public class SingleTest {
     @Before
     public void init(){
         TestStartUp.startUpWithSpring();
+
     }
 
     @Test
