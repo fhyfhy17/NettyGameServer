@@ -27,10 +27,6 @@ public class SingleTest {
     @Before
     public void init(){
         TestStartUp.startUpWithSpring();
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/jwpttcg66/master
     }
 
     @Test
