@@ -22,18 +22,27 @@ public class RpcTpsRunable implements Runnable{
 
     private CountDownLatch countDownLatch;
 
+<<<<<<< HEAD
 
     private AtomicLong privateAtomicLong;
 
 
+=======
+    private AtomicLong privateAtomicLong;
+
+>>>>>>> refs/remotes/jwpttcg66/master
     public RpcTpsRunable(RpcProxyService rpcProxyService, AtomicLong atomicLong, int maxSize, CountDownLatch countDownLatch) {
         this.rpcProxyService = rpcProxyService;
         this.atomicLong = atomicLong;
         this.maxSize = maxSize;
         this.countDownLatch = countDownLatch;
+<<<<<<< HEAD
 
         privateAtomicLong = new AtomicLong();
 
+=======
+        privateAtomicLong = new AtomicLong();
+>>>>>>> refs/remotes/jwpttcg66/master
     }
 
     @Override
@@ -62,7 +71,10 @@ public class RpcTpsRunable implements Runnable{
             e.printStackTrace();
         }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/jwpttcg66/master
         this.countDownLatch.countDown();
     }
 }
