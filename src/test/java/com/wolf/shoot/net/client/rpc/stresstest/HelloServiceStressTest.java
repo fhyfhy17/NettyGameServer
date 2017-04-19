@@ -1,12 +1,8 @@
-package com.wolf.shoot.rpc.client;
+package com.wolf.shoot.net.client.rpc.stresstest;
 
 
+import com.wolf.shoot.TestStartUp;
 import com.wolf.shoot.common.constant.BOEnum;
-import com.wolf.shoot.common.util.BeanUtil;
-import com.wolf.shoot.manager.LocalMananger;
-import com.wolf.shoot.manager.spring.LocalSpringBeanManager;
-import com.wolf.shoot.manager.spring.LocalSpringServiceManager;
-import com.wolf.shoot.manager.spring.LocalSpringServicerAfterManager;
 import com.wolf.shoot.service.rpc.client.RpcContextHolder;
 import com.wolf.shoot.service.rpc.client.RpcContextHolderObject;
 import com.wolf.shoot.service.rpc.client.RpcProxyService;
@@ -26,40 +22,53 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:bean/*.xml")
-public class HelloServiceTest {
+public class HelloServiceStressTest {
 
     @Autowired
     private RpcProxyService rpcProxyService;
 
+
     @Before
-    public void init(){
-        LocalSpringServiceManager localSpringServiceManager = (LocalSpringServiceManager) BeanUtil.getBean("localSpringServiceManager");
-        LocalSpringBeanManager localSpringBeanManager = (LocalSpringBeanManager) BeanUtil.getBean("localSpringBeanManager");
-        LocalSpringServicerAfterManager localSpringServicerAfterManager  = (LocalSpringServicerAfterManager) BeanUtil.getBean("localSpringServicerAfterManager");
-        LocalMananger.getInstance().setLocalSpringBeanManager(localSpringBeanManager);
-        LocalMananger.getInstance().setLocalSpringServiceManager(localSpringServiceManager);
-        LocalMananger.getInstance().setLocalSpringServicerAfterManager(localSpringServicerAfterManager);
-        try {
-            localSpringServiceManager.start();
-            localSpringServicerAfterManager.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void init() {
+        TestStartUp.startUp();
     }
 
     @Test
     public void helloTest1() {
+        int serverId = 9001;
         HelloService helloService = rpcProxyService.createProxy(HelloService.class);
-        int serverId = 8001;
+        final String result = "Hello! World";
+        final int test_size = 1_000;
+        int wrong_size = 0;
+        int right_size = 0;
+        long current_time = System.currentTimeMillis();
+
         RpcContextHolderObject rpcContextHolderObject = new RpcContextHolderObject(BOEnum.WORLD, serverId);
         RpcContextHolder.setContextHolder(rpcContextHolderObject);
-        String result = helloService.hello("World");
-        System.out.println(result);
+        for (int i = 0; i < test_size; i++) {
+            if(helloService!=null){
+                String test = helloService.hello("World");
+                if (test != null && result.equals(test))
+                    right_size++;
+                else
+                    wrong_size++;
+            }
+        }
+
+        ;
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        System.out.println("------------------------- ------------------------- ");
+
+        System.out.println("right_size " + right_size);
+        System.out.println("wrong_size " + wrong_size);
+        System.out.println("cost time " + (System.currentTimeMillis() - current_time));
+        System.out.println("------------------------- ------------------------- ");
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         Assert.assertEquals("Hello! World", result);
     }
 
     @After
-    public void setTear(){
+    public void setTear() {
         if (rpcProxyService != null) {
             try {
                 rpcProxyService.shutdown();

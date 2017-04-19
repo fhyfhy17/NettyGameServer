@@ -1,7 +1,6 @@
 ﻿/*
  * Server基本信息
  */
-config.serverType=world;
 config.charset="UTF-8";
 config.version="0.2.0.1";
 config.serverId="8001";
@@ -31,8 +30,11 @@ config.rpcPorts="10100";
 config.rpcThreadPoolSize=60;
 config.rpcThreadPoolQueueSize=65536;
 config.rpcConnectThreadSize=16;
-config.rpcSendProxyThreadSize=16;
+config.rpcSendProxyThreadSize=60;
 config.rpcServicePackage="com.wolf.shoot.service.rpc.service.server";
 /**message**/
 config.netMessageHandlerNameSpace="com.wolf.shoot.message.handler.impl";
 config.netMsgNameSpace="com.wolf.shoot.message.logic";
+/**异步线程池配置**/
+config.asyncThreadPoolCoreSize=1;
+config.asyncThreadPoolMaxSize=100;
