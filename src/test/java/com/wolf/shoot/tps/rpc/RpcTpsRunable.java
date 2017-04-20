@@ -22,6 +22,7 @@ public class RpcTpsRunable implements Runnable{
 
     private CountDownLatch countDownLatch;
 
+
     private AtomicLong privateAtomicLong;
 
     public RpcTpsRunable(RpcProxyService rpcProxyService, AtomicLong atomicLong, int maxSize, CountDownLatch countDownLatch) {
@@ -29,7 +30,9 @@ public class RpcTpsRunable implements Runnable{
         this.atomicLong = atomicLong;
         this.maxSize = maxSize;
         this.countDownLatch = countDownLatch;
+
         privateAtomicLong = new AtomicLong();
+
     }
 
     @Override
@@ -57,6 +60,7 @@ public class RpcTpsRunable implements Runnable{
         }catch (Throwable e){
             e.printStackTrace();
         }
+
 
         this.countDownLatch.countDown();
     }
