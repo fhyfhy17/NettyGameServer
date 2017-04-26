@@ -34,7 +34,6 @@ public class HelloCallbackTest {
     @Test
     public void test() {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-
         try {
             AsyncRpcProxy proxy = (AsyncRpcProxy) rpcProxyService.createAsync(HelloService.class);
             RpcContextHolderObject rpcContextHolderObject = new RpcContextHolderObject(BOEnum.WORLD, 8001);
