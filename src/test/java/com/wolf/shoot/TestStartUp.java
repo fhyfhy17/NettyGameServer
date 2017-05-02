@@ -9,6 +9,7 @@ import com.wolf.shoot.manager.spring.LocalSpringBeanManager;
 import com.wolf.shoot.manager.spring.LocalSpringServiceManager;
 import com.wolf.shoot.manager.spring.LocalSpringServicerAfterManager;
 import com.wolf.shoot.service.net.message.registry.MessageRegistry;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.wolf.shoot.service.net.message.registry.MessageRegistry;
 
@@ -19,7 +20,7 @@ import com.wolf.shoot.service.net.message.registry.MessageRegistry;
 public class TestStartUp {
 
     public static void startUpWithSpring(){
-
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext(new String[]{"bean/*.xml"});
         LocalSpringServiceManager localSpringServiceManager = (LocalSpringServiceManager) BeanUtil.getBean("localSpringServiceManager");
         LocalSpringBeanManager localSpringBeanManager = (LocalSpringBeanManager) BeanUtil.getBean("localSpringBeanManager");
         LocalSpringServicerAfterManager localSpringServicerAfterManager  = (LocalSpringServicerAfterManager) BeanUtil.getBean("localSpringServicerAfterManager");

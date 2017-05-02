@@ -1,5 +1,6 @@
 package com.wolf.shoot.service.rpc.client;
 
+import com.wolf.shoot.common.config.GameServerConfigService;
 import com.wolf.shoot.common.constant.Loggers;
 import com.wolf.shoot.manager.LocalMananger;
 import com.wolf.shoot.service.net.RpcRequest;
@@ -26,7 +27,6 @@ public class RPCFuture implements Future<Object> {
     private long startTime;
 
     private long responseTimeThreshold = 5000;
-    private long timeout = 10000;
 
     private List<AsyncRPCCallback> pendingCallbacks = new ArrayList<AsyncRPCCallback>();
     private ReentrantLock lock = new ReentrantLock();
@@ -91,7 +91,9 @@ public class RPCFuture implements Future<Object> {
     
     public boolean isTimeout(){
     	long responseTime = System.currentTimeMillis() - startTime;
-        if (responseTime > this.timeout) {
+        GameServerConfigService gameServerConfigService = LocalMananger.getInstance().getLocalSpringServiceManager().getGameServerConfigService();
+        int timeOut = gameServerConfigService.getGameServerConfig().getRpcFutureDeleteTimeOut();
+        if (responseTime >= timeOut) {
             return true;
         }
         return false;
