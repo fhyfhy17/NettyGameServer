@@ -1,3 +1,4 @@
+
 *.tar.gz
 logs/
 .DS_Store
@@ -9,3 +10,11 @@ dist
 .settings/org.eclipse.jdt.core.prefs
 .settings/org.eclipse.core.resources.prefs
 .settings/org.eclipse.m2e.core.prefs
+target
+*.tar.gz
+logs/
+.DS_Store
+.idea
+*.iml
+dist
+*.pyc

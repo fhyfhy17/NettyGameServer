@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+    <service boenum="proxy"/>
+    <service boenum="world"/>
+    <service boenum="game" />
+    <service boenum="db" />
+</services>

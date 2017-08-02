@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<servers>
+    <server>
+        <name>proxy-gate</name>
+        <id>11001</id>
+        <ip>127.0.0.1</ip>
+        <port>9090</port>
+        <!--<gate-thread-bosss>6</gate-thread-bosss>-->
+        <!--<gate-thread-worker>60</gate-thread-worker>-->
+        <transfer-ip>127.0.0.1</transfer-ip>
+        <transfer-port>7090</transfer-port>
+    </server>
+</servers>
