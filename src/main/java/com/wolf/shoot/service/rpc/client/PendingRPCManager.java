@@ -2,6 +2,8 @@ package com.wolf.shoot.service.rpc.client;
 
 import org.springframework.stereotype.Service;
 
+import com.snowcattle.game.service.rpc.client.RPCFuture;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
