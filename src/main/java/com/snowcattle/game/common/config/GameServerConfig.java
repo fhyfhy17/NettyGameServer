@@ -54,7 +54,7 @@ public class GameServerConfig extends ServerConfig {
     private boolean udpMessageOrderQueueFlag = true;
 
     /*updateservice是否使用将多个update绑定在一个线程执行*/
-    private boolean updateServiceExcutorFlag = true;
+    private byte updateServiceExcutorFlag ;
 
     //开启rpc
     private boolean rpcOpen = false;
@@ -234,15 +234,16 @@ public class GameServerConfig extends ServerConfig {
         this.updQueueMessageProcessWorkerSize = updQueueMessageProcessWorkerSize;
     }
 
-    public boolean isUpdateServiceExcutorFlag() {
-        return updateServiceExcutorFlag;
-    }
+    
+    public byte getUpdateServiceExcutorFlag() {
+		return updateServiceExcutorFlag;
+	}
 
-    public void setUpdateServiceExcutorFlag(boolean updateServiceExcutorFlag) {
-        this.updateServiceExcutorFlag = updateServiceExcutorFlag;
-    }
+	public void setUpdateServiceExcutorFlag(byte updateServiceExcutorFlag) {
+		this.updateServiceExcutorFlag = updateServiceExcutorFlag;
+	}
 
-    public boolean isRpcOpen() {
+	public boolean isRpcOpen() {
         return rpcOpen;
     }
 

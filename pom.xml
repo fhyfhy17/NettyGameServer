@@ -6,9 +6,7 @@
 
     <groupId>com.snowcattle.game</groupId>
     <artifactId>netty-game-server</artifactId>
-<<<<<<< HEAD
-    <version>1.1.5-SNAPSHOT</version>
-=======
+
     <packaging>pom</packaging>
     <version>1.1.6-SNAPSHOT</version>
     <modules>
@@ -18,7 +16,6 @@
         <module>game-db</module>
         <module>game-common</module>
     </modules>
->>>>>>> refs/remotes/jwpttcg66/master
 
     <repositories>
         <repository>
@@ -38,22 +35,18 @@
         <version.file>version.txt</version.file>
         <spring.version>4.3.2.RELEASE</spring.version>
         <ehcache.version>3.2.0</ehcache.version>
+        
         <!--jwpttcg66 maven工程-->
-<<<<<<< HEAD
-        <GameShardingDb.version>1.2.004</GameShardingDb.version>
-        <GameThreadPool.version>1.1.1</GameThreadPool.version>
-        <game-executor.version>1.7.3</game-executor.version>
-        <game-expression.version>1.1</game-expression.version>
-
-=======
         <GameThreadPool.version>1.1.5</GameThreadPool.version>
         <game-expression.version>1.1</game-expression.version>
         <future-listener.version>1.1</future-listener.version>
+        <!-- game-executor.version>1.7.3</game-executor.version -->
+        <GameShardingDb.version>1.2.004</GameShardingDb.version>
+       
         <disruptor.version>3.3.6</disruptor.version>
->>>>>>> refs/remotes/jwpttcg66/master
-        <project.build.directory>target/classes/com</project.build.directory>
-        <!--<project.build.directory>target</project.build.directory>-->
-        <!--<project.build.resource.directory>target/resource</project.build.resource.directory>-->
+       
+        <project.build.directory>target</project.build.directory>
+        <project.build.resource.directory>target/resource</project.build.resource.directory>
 
     </properties>
 
@@ -181,23 +174,13 @@
             <version>3.1</version>
         </dependency>
 
-<<<<<<< HEAD
-        <!--<dependency>-->
-            <!--<groupId>org.ehcache</groupId>-->
-            <!--<artifactId>ehcache</artifactId>-->
-            <!--<version>${ehcache.version}</version>-->
-        <!--</dependency>-->
 
-=======
->>>>>>> refs/remotes/jwpttcg66/master
         <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
 		<dependency>
 		    <groupId>org.apache.zookeeper</groupId>
 		    <artifactId>zookeeper</artifactId>
 		    <version>3.5.2-alpha</version>
 		</dependency>
-<<<<<<< HEAD
-
 
         <dependency>
             <groupId>com.github.jwpttcg66</groupId>
@@ -206,8 +189,6 @@
             <scope>test</scope>
         </dependency>
 
-=======
->>>>>>> refs/remotes/jwpttcg66/master
         <dependency>
             <groupId>com.github.jwpttcg66</groupId>
             <artifactId>GameThreadPool</artifactId>

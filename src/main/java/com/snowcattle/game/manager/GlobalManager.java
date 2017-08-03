@@ -4,20 +4,24 @@ import com.snowcattle.game.common.config.GameServerConfig;
 import com.snowcattle.game.common.config.GameServerConfigService;
 import com.snowcattle.game.common.constant.GlobalConstants;
 import com.snowcattle.game.common.util.BeanUtil;
+import com.snowcattle.game.executor.common.UpdateExecutorEnum;
 import com.snowcattle.game.executor.common.utils.Constants;
 import com.snowcattle.game.executor.event.EventBus;
 import com.snowcattle.game.executor.event.impl.listener.DispatchCreateEventListener;
 import com.snowcattle.game.executor.event.impl.listener.DispatchFinishEventListener;
 import com.snowcattle.game.executor.event.impl.listener.DispatchUpdateEventListener;
+import com.snowcattle.game.executor.update.pool.DisruptorExecutorService;
 import com.snowcattle.game.executor.update.pool.UpdateBindExecutorService;
 import com.snowcattle.game.executor.update.pool.UpdateExecutorService;
 import com.snowcattle.game.executor.update.service.UpdateService;
-import com.snowcattle.game.executor.update.thread.dispatch.BindDisptachThread;
+import com.snowcattle.game.executor.update.thread.dispatch.BindNotifyDisptachThread;
+import com.snowcattle.game.executor.update.thread.dispatch.DisruptorDispatchThread;
 import com.snowcattle.game.executor.update.thread.dispatch.LockSupportDisptachThread;
 import com.snowcattle.game.manager.spring.LocalSpringBeanManager;
 import com.snowcattle.game.manager.spring.LocalSpringServiceManager;
 import com.snowcattle.game.manager.spring.LocalSpringServicerAfterManager;
 import com.snowcattle.game.service.net.process.*;
+import com.snowcattle.game.thread.policy.RejectedPolicyType;
 
 import java.util.concurrent.TimeUnit;
 
@@ -71,39 +75,51 @@ public class GlobalManager {
 
 
     public void initUpdateService() throws Exception {
-        GameServerConfigService gameServerConfigService = LocalMananger.getInstance().getLocalSpringServiceManager().getGameServerConfigService();
-        EventBus eventBus = new EventBus();
-        EventBus updateEventBus = new EventBus();
-        int corePoolSize = gameServerConfigService.getGameServerConfig().getGameExcutorCorePoolSize();
-        long keepAliveTime = gameServerConfigService.getGameServerConfig().getGameExcutorKeepAliveTime();
-        TimeUnit timeUnit = TimeUnit.SECONDS;
-        GameServerConfig gameServerConfig = gameServerConfigService.getGameServerConfig();
-        int cycleSleepTime = gameServerConfigService.getGameServerConfig().getGameExcutorCycleTime() / Constants.cycle.cycleSize;
-        long minCycleTime = gameServerConfigService.getGameServerConfig().getGameExcutorMinCycleTime() * cycleSleepTime;
+    	 GameServerConfigService gameServerConfigService = LocalMananger.getInstance().getLocalSpringServiceManager().getGameServerConfigService();
+         EventBus eventBus = new EventBus();
+         EventBus updateEventBus = new EventBus();
+         int corePoolSize = gameServerConfigService.getGameServerConfig().getGameExcutorCorePoolSize();
+         long keepAliveTime = gameServerConfigService.getGameServerConfig().getGameExcutorKeepAliveTime();
+         TimeUnit timeUnit = TimeUnit.SECONDS;
+         GameServerConfig gameServerConfig = gameServerConfigService.getGameServerConfig();
+         int cycleSleepTime = gameServerConfigService.getGameServerConfig().getGameExcutorCycleTime() / Constants.cycle.cycleSize;
+         long minCycleTime = gameServerConfigService.getGameServerConfig().getGameExcutorMinCycleTime() * cycleSleepTime;
 
-        if (gameServerConfig.isUpdateServiceExcutorFlag()) {
-            UpdateBindExecutorService updateBindExcutorService = new UpdateBindExecutorService(corePoolSize);
+         if (gameServerConfig.getUpdateServiceExcutorFlag() == UpdateExecutorEnum.bindThread.ordinal()) {
+             UpdateBindExecutorService updateBindExcutorService = new UpdateBindExecutorService(corePoolSize);
 
-            BindDisptachThread dispatchThread = new BindDisptachThread(updateEventBus, updateBindExcutorService
-                    , cycleSleepTime, cycleSleepTime*1000);
-            updateBindExcutorService.setDispatchThread(dispatchThread);
-            UpdateService updateService = new UpdateService(dispatchThread, updateBindExcutorService);
-            updateEventBus.addEventListener(new DispatchCreateEventListener(dispatchThread, updateService));
-            updateEventBus.addEventListener(new DispatchUpdateEventListener(dispatchThread, updateService));
-            updateEventBus.addEventListener(new DispatchFinishEventListener(dispatchThread, updateService));
-            LocalMananger.getInstance().add(updateService, UpdateService.class);
+             BindNotifyDisptachThread dispatchThread = new BindNotifyDisptachThread(updateEventBus, updateBindExcutorService
+                     , cycleSleepTime, cycleSleepTime*1000);
+             updateBindExcutorService.setDispatchThread(dispatchThread);
+             UpdateService updateService = new UpdateService(dispatchThread, updateBindExcutorService);
+             updateEventBus.addEventListener(new DispatchCreateEventListener(dispatchThread, updateService));
+             updateEventBus.addEventListener(new DispatchUpdateEventListener(dispatchThread, updateService));
+             updateEventBus.addEventListener(new DispatchFinishEventListener(dispatchThread, updateService));
+             LocalMananger.getInstance().add(updateService, UpdateService.class);
 
-        } else {
-            UpdateExecutorService updateExecutorService = new UpdateExecutorService(corePoolSize);
-            LockSupportDisptachThread dispatchThread = new LockSupportDisptachThread(updateEventBus, updateExecutorService
-                    , cycleSleepTime, minCycleTime);
-            UpdateService updateService = new UpdateService(dispatchThread, updateExecutorService);
-            updateEventBus.addEventListener(new DispatchCreateEventListener(dispatchThread, updateService));
-            updateEventBus.addEventListener(new DispatchUpdateEventListener(dispatchThread, updateService));
-            updateEventBus.addEventListener(new DispatchFinishEventListener(dispatchThread, updateService));
-            LocalMananger.getInstance().add(updateService, UpdateService.class);
+         } else if(gameServerConfig.getUpdateServiceExcutorFlag() == UpdateExecutorEnum.locksupport.ordinal()){
+             UpdateExecutorService updateExecutorService = new UpdateExecutorService(corePoolSize, corePoolSize * 2 , RejectedPolicyType.BLOCKING_POLICY);
+             LockSupportDisptachThread dispatchThread = new LockSupportDisptachThread(updateEventBus, updateExecutorService
+                     , cycleSleepTime, minCycleTime);
+             UpdateService updateService = new UpdateService(dispatchThread, updateExecutorService);
+             updateEventBus.addEventListener(new DispatchCreateEventListener(dispatchThread, updateService));
+             updateEventBus.addEventListener(new DispatchUpdateEventListener(dispatchThread, updateService));
+             updateEventBus.addEventListener(new DispatchFinishEventListener(dispatchThread, updateService));
+             LocalMananger.getInstance().add(updateService, UpdateService.class);
 
-        }
+         }else if(gameServerConfig.getUpdateServiceExcutorFlag() == UpdateExecutorEnum.disruptor.ordinal()){
+             String poolName = GlobalConstants.Thread.UPDATE_EXECUTOR_SERVICE;
+             DisruptorExecutorService disruptorExcutorService = new DisruptorExecutorService(poolName, corePoolSize);
+             DisruptorDispatchThread dispatchThread = new DisruptorDispatchThread(updateEventBus, disruptorExcutorService
+                     , cycleSleepTime, cycleSleepTime*1000);
+             disruptorExcutorService.setDisruptorDispatchThread(dispatchThread);
+             UpdateService updateService = new UpdateService(dispatchThread, disruptorExcutorService);
+             updateEventBus.addEventListener(new DispatchCreateEventListener(dispatchThread, updateService));
+             updateEventBus.addEventListener(new DispatchUpdateEventListener(dispatchThread, updateService));
+             updateEventBus.addEventListener(new DispatchFinishEventListener(dispatchThread, updateService));
+
+             LocalMananger.getInstance().add(updateService, UpdateService.class);
+         }
     }
 
     public void initNetMessageProcessor() throws Exception {
@@ -137,9 +153,11 @@ public class GlobalManager {
         GameServerConfigService gameServerConfigService = LocalMananger.getInstance().getLocalSpringServiceManager().getGameServerConfigService();
         UpdateService updateService = LocalMananger.getInstance().get(UpdateService.class);
         GameServerConfig gameServerConfig = gameServerConfigService.getGameServerConfig();
-        if (gameServerConfig.isUpdateServiceExcutorFlag()) {
+        if (gameServerConfig.getUpdateServiceExcutorFlag() == UpdateExecutorEnum.bindThread.ordinal()) {
             updateService.notifyStart();
-        }else {
+        }else if(gameServerConfig.getUpdateServiceExcutorFlag() == UpdateExecutorEnum.locksupport.ordinal()){
+            updateService.start();
+        }else if(gameServerConfig.getUpdateServiceExcutorFlag() == UpdateExecutorEnum.disruptor.ordinal()){
             updateService.start();
         }
 

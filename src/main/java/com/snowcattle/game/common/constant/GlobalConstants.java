@@ -114,6 +114,7 @@ public class GlobalConstants {
         public static final String START_FINISHED ="start_finished";
         public static final String DETECT_RPCPENDING ="detect_rpcpending";
         public static final String GAME_ASYNC_CALL = "game_async_call";
+        public static final String UPDATE_EXECUTOR_SERVICE = "UpdateExecutorService";
         public static final String RPC_HANDLER = "rpc_handler";
         public static final String EVENT_WORKER = "event_worker";
         public static final String EVENT_HANDLER = "event_handler";
